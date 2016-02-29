@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  primary_destination: MyString
+  county: MyString
+  jan: MyString
+  feb: MyString
+  mar: MyString
+  apr: MyString
+  may: MyString
+  jun: MyString
+  jul: MyString
+  aug: MyString
+  sep: MyString
+  oct: MyString
+  nov: MyString
+  dec: MyString
+  mim: MyString
+
+two:
+  primary_destination: MyString
+  county: MyString
+  jan: MyString
+  feb: MyString
+  mar: MyString
+  apr: MyString
+  may: MyString
+  jun: MyString
+  jul: MyString
+  aug: MyString
+  sep: MyString
+  oct: MyString
+  nov: MyString
+  dec: MyString
+  mim: MyString

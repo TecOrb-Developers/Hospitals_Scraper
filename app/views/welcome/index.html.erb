@@ -1,9 +1,9 @@
 <%#=render 'index'%>
-
-
-<%= link_to 'new CSV ', new_path %> <br><br>
-
-<%= link_to 'Download CSV list', generate_csv_path %>
+<%if params[:yes].present?%>
+	<%= render "scrape_links"%>
+<%else%>
+	<%= link_to "Do you want to scraping?",scrape_index_path(:yes=>"ok") %>
+<%end%>
 
 
 
