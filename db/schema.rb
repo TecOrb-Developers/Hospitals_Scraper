@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226075002) do
+ActiveRecord::Schema.define(version: 20160229112917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,76 +49,13 @@ ActiveRecord::Schema.define(version: 20160226075002) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "fema_codes", force: :cascade do |t|
-    t.string   "property_id"
-    t.string   "property_name"
-    t.string   "fema_id"
-    t.string   "address"
-    t.string   "city"
-    t.string   "state"
-    t.string   "state_code"
-    t.string   "state_id"
-    t.string   "pin"
-    t.string   "details"
-    t.string   "phone"
-    t.string   "fax"
-    t.string   "email"
-    t.string   "website"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "gsa_rates", force: :cascade do |t|
-    t.string   "state"
-    t.string   "primary_destination"
-    t.string   "county"
-    t.string   "jan"
-    t.string   "feb"
-    t.string   "mar"
-    t.string   "apr"
-    t.string   "may"
-    t.string   "jun"
-    t.string   "jul"
-    t.string   "aug"
-    t.string   "sep"
-    t.string   "oct"
-    t.string   "nov"
-    t.string   "dec"
-    t.string   "mim"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-  end
-
-  create_table "invalid_urls", force: :cascade do |t|
-    t.string   "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "scrapes", force: :cascade do |t|
+  create_table "designers", force: :cascade do |t|
     t.string   "name"
-    t.string   "link"
-    t.string   "rating"
-    t.string   "s_address"
-    t.string   "e_address"
-    t.string   "city"
+    t.string   "contact"
+    t.string   "email"
+    t.string   "address"
     t.string   "state"
     t.string   "pin"
-    t.string   "star"
-    t.string   "price"
-    t.string   "total_reviews"
-    t.string   "traveller_rating"
-    t.text     "description"
-    t.text     "amenities"
-    t.text     "photos"
-    t.text     "reviews"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "rooms"
-  end
-
-  create_table "tests", force: :cascade do |t|
-    t.string   "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

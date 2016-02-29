@@ -9,13 +9,13 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  database:  lodging_scraper_development
+  database:  designer_scraper_development
 
 test:
   <<: *defaults
-  database:  lodging_scraper_test
+  database:  designer_scraper_test
 
 
 production:
   <<: *defaults
-  database:  lodging_scraper_production
+  database:  designer_scraper_production
