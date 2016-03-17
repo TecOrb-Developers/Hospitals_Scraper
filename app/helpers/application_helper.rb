@@ -3,7 +3,7 @@ module ApplicationHelper
   require 'nokogiri'
   require 'open-uri'
   require 'mechanize'
-  
+
   def hospitals_data_scrape
     @states = ["al", "ak", "az", "ar", "ca", "co", "ct", "de", "dc", "fl", "ga", "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj", "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt", "vi", "va", "wa", "wv", "wi", "wy"] 
     @links = []
@@ -19,15 +19,21 @@ module ApplicationHelper
           @pages= p > p.round ? p.round+1 : p.round
           p "--========================================================-Total pages---================================================#{@pages}"
           for i in 1..@pages
+          	@exists_urls = Hospital.all.pluck(:link)
             if i==1
               hospital_links = doc.css('.h-flush a')
               if hospital_links.present?
                 hospital_links.each do |h|
                   # p "--------#{h[:href]}"
                   begin
-                    data = hospital_data(h[:href])
+                  	if !@exists_urls.include?("http://health.usnews.com#{h[:href]}")
+                     data = hospital_data(h[:href])
+                  	end
                   rescue
-                    p "XXXXXXXXXXXX----skip----link--#{h}"
+                  	if !InvalidUrl.exists?(:url=>h)
+                  		InvalidUrl.create!(:url=>h)
+                    	p "XXXXXXXXXXXX----skip----link--#{h}"
+                    end
                   end
                 end
               end
@@ -39,9 +45,14 @@ module ApplicationHelper
                 hospital_links.each do |h|
                   # p "--------#{h[:href]}"
                   begin
-                    data = hospital_data(h[:href])
+                    if !@exists_urls.include?("http://health.usnews.com#{h[:href]}")
+                     data = hospital_data(h[:href])
+                  	end
                   rescue
-                    p "XXXXXXXXXXXX----skip----link--#{h}"
+                    if !InvalidUrl.exists?(:url=>h)
+                  		InvalidUrl.create!(:url=>h)
+                    	p "XXXXXXXXXXXX----skip----link--#{h}"
+                    end
                   end                    
                 end
               end
@@ -50,7 +61,10 @@ module ApplicationHelper
           end
         end
       rescue =>e
-        p "------XXXXXXXXXXx----#{e.backtrace}------#{s}---NOT FOUND--------"
+      	if !InvalidStateUrl.exists?(:url=>s)
+	    		InvalidStateUrl.create!(:url=>s)
+	      	 p "------XXXXXXXXXXx----#{e.backtrace}------#{s}---NOT FOUND--------"
+	      end
       end
       sleep [4,5].sample
     end
@@ -67,6 +81,7 @@ module ApplicationHelper
     @hospital["hospital_type"]=doc.at_css('.item:nth-child(1) p:nth-child(4)').present? ? doc.at_css('.item:nth-child(1) p:nth-child(4)').text.gsub("\n","").strip : "n/a"
     @hospital["beds"]=doc.at_css('#content :nth-child(2) p:nth-child(4)').present? ? doc.at_css('#content :nth-child(2) p:nth-child(4)').text.gsub("\n","").strip : "n/a"
     @hospital["description"]=doc.at_css('.maincontent .sep:nth-child(2) p').present? ? doc.at_css('.maincontent .sep:nth-child(2) p').text.gsub("\n","").strip : "n/a"
+    @hospital["link"]=url
     @ranking=doc.css('.block .media_content')
     if @ranking.present?
       @r=[]
@@ -92,17 +107,20 @@ module ApplicationHelper
       @hospital["address"]="#{@add[0]} #{@hospital['city']}"
       @hospital["pin"]=@add.last.split(' ').last
       @hospital["country"]="USA"
-      @hospital["contact"]=newdoc.at_css('p:nth-child(6)').text.gsub("\n","").strip
-      @hospital["link"]=newdoc.at_css('.media_content a').text.gsub("\n","").strip
+      @hospital["contact"]=newdoc.at_css('p:nth-child(6)').present? ? newdoc.at_css('p:nth-child(6)').text.gsub("\n","").strip : "n/a"
+      @hospital["web"]=newdoc.at_css('.media_content a').present? ? newdoc.at_css('.media_content a').text.gsub("\n","").strip : "n/a"
     rescue => e
-      p "---EEEEEEEEEEEEE------#{e.backtrace}"
+    	if !InvalidUrl.exists?(:url=>h)
+    		InvalidUrl.create!(:url=>h)
+      	p "---EEEEEEEEEEEEE------#{e.backtrace}"
+      end
     end
     if !Hospital.exists?(:name=>@hospital["name"],:pin=>@hospital["pin"])
       @h=Hospital.create!(@hospital)
       p "********#{@h.id}**#{@h.state}**#{@h.name}*****"
-    else
-      @h = Hospital.find_by_name_and_pin(@hospital["name"],@hospital["pin"])
-      @h.update_attributes(@hospital)
+    # else
+    #   @h = Hospital.find_by_name_and_pin(@hospital["name"],@hospital["pin"])
+    #   @h.update_attributes(@hospital)
     end
   end 
 end
