@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  address: MyString
+  city: MyString
+  pin: MyString
+  state: MyString
+  country: MyString
+  contact: MyString
+  fax: MyString
+  link: MyString
+  trauma_center: MyString
+  hospital_type: MyString
+  beds: MyString
+  ranking: MyString
+  specialties: MyString
+
+two:
+  name: MyString
+  description: MyText
+  address: MyString
+  city: MyString
+  pin: MyString
+  state: MyString
+  country: MyString
+  contact: MyString
+  fax: MyString
+  link: MyString
+  trauma_center: MyString
+  hospital_type: MyString
+  beds: MyString
+  ranking: MyString
+  specialties: MyString

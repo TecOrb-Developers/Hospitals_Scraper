@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DesignerTest < ActiveSupport::TestCase
+class HospitalTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

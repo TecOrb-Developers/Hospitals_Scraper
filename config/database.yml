@@ -9,13 +9,13 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  database:  designer_scraper_development
+  database:  hospital_scraper_development
 
 test:
   <<: *defaults
-  database:  designer_scraper_test
+  database:  hospital_scraper_test
 
 
 production:
   <<: *defaults
-  database:  designer_scraper_production
+  database:  hospital_scraper_production

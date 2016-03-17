@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   
 
-  get 'designer_scrape'=>"welcome#designer_scrape"
+  get 'hospital_scrape'=>"welcome#hospital_scrape"
 
   root 'welcome#index'
   get 'scrape_index' =>'welcome#index'
